@@ -1,0 +1,30 @@
+{% extends 'main.html' %}
+
+{% block title %}Detail page{% endblock title %}
+
+{% block content %}
+
+<h2>Post detail page</h2>
+
+<h4>Title: {{post.title}}</h4>
+<p>Publish by: {{post.author}}</p>
+
+<p><a href="{% url 'post_share' post.id %}">Share this post</a></p>
+
+<h3>Comment on this post</h3>
+<a href="{% url 'post_comment' post.id %}">Comment</a>
+
+{% if comments %}
+{% for comment in comments %}
+<p><em>By: {{comment.name}}</em></p>
+<p>{{comment.updated}}</p>
+<p>{{comment.body}}</p>
+<hr>
+{% endfor %}
+{% with comments.count as total_comments %}
+<i>{{total_comments}} comment{{total_comments|pluralize}}</i>
+{% endwith %}
+{% endif %}
+
+
+{% endblock content %}
