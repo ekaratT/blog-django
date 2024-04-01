@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from django.utils.translation import gettext_lazy as _
 from django.utils import timezone
 from django.urls import reverse
+from taggit.managers import TaggableManager
 
 # Create your models here.
 
@@ -27,6 +28,7 @@ class Post(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
     published = PostManager()
+    tag = TaggableManager()
 
     class Meta:
         ordering = ['-publish']

@@ -4,6 +4,7 @@
 {% block content %}
 {% for post in page_obj %}
 <a href="{{post.get_absolute_url}}"><h2>{{post.title}}</h2></a>
+<p>Tags: {{post.tag.all|join:", "}}</p>
 <p>{{post.updated}} by {{post.author}}</p>
 <p>{{post.body|truncatewords:30|linebreaks}}</p>
 {% endfor %}
