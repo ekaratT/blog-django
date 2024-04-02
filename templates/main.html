@@ -1,3 +1,5 @@
+{% load core_tags %}
+<!-- Load custom template tag by module name -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,9 +7,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}{% endblock title %}</title>
 </head>
-<body>
-    {% block content %}
-    {% endblock content %}
-    
+<body style="margin: 0 40px; box-sizing: border-box;">
+    {% include 'include/nav.html' %}
+    <main style="display: grid; grid-template-columns: 2fr 4fr;">
+        <div class="sidebar">
+            <h2>Sidebar</h2>
+            <h3>Here is my blog post</h3>
+            <p>I've written {% total_posts %} posts so far.</p>
+        </div>
+        <div class="content">
+            {% block content %}
+            {% endblock content %}
+        </div>
+    </main>
 </body>
 </html>
