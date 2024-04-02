@@ -8,6 +8,7 @@ from django.core.mail import send_mail
 from django.views.decorators.http import require_POST
 from django.conf import settings
 from taggit.models import Tag
+from django.db.models import Count
 
 
 # Create your views here.
@@ -43,8 +44,17 @@ def post_detail(request, year, month, day, post):
                              publish__month=month,
                              publish__day=day
                              )
+    # List of active comment for the post
     comments = post.comments.filter(active=True)
-    context = {'post': post, 'comments': comments}
+    # Form for user to comment
+    form = CommentForm()
+    # List the similar posts
+    post_tags_ids = post.tag.values_list('id', flat=True) #flat=True is passed to get distinct value
+    similar_posts = Post.published.filter(tag__in=post_tags_ids).exclude(id=post.id) # Exclude the current post.
+    print(f'This is similar posts {similar_posts}')
+    similar_posts = similar_posts.annotate(same_tags=Count('tag')).order_by('-same_tags', '-publish')[:4]
+    print(f'This is similar posts after annotate {similar_posts}')
+    context = {'post': post, 'comments': comments, 'form': form, 'similar_posts': similar_posts}
     return render(request, 'core/detail.html', context)
 
 

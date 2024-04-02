@@ -7,7 +7,13 @@
 {% endif %}
 {% for post in page_obj %}
 <a href="{{post.get_absolute_url}}"><h2>{{post.title}}</h2></a>
-<p>Tags: {{post.tag.all|join:", "}}</p>
+<p>Tags: 
+    {% for tag in post.tag.all %}
+        <a href="{% url 'post_list_by_tag' tag.slug %}">{{tag}}</a>
+        <!-- if the tag is not last one then separate by comma -->
+        {% if not forloop.last %}, {% endif %} 
+    {% endfor %}
+</p>
 <p>{{post.updated}} by {{post.author}}</p>
 <p>{{post.body|truncatewords:30|linebreaks}}</p>
 {% endfor %}
