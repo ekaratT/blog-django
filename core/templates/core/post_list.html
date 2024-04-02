@@ -2,6 +2,9 @@
 {% block title %}Post list{% endblock title %}
 
 {% block content %}
+{% if tag %}
+<h2>Posts tagged with {{tag.name}}</h2>
+{% endif %}
 {% for post in page_obj %}
 <a href="{{post.get_absolute_url}}"><h2>{{post.title}}</h2></a>
 <p>Tags: {{post.tag.all|join:", "}}</p>

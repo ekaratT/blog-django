@@ -5,8 +5,6 @@ from django.utils import timezone
 from django.urls import reverse
 from taggit.managers import TaggableManager
 
-# Create your models here.
-
 
 class PostManager(models.Manager):
     def get_queryset(self):
@@ -63,5 +61,6 @@ class Comment(models.Model):
 
     def __str__(self):
         return f'Comment by {self.name} on {self.post}'
+
 
     
