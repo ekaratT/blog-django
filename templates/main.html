@@ -15,7 +15,17 @@
             <h3>Here is my blog post</h3>
             <p>I've written {% total_posts %} posts so far.</p>
             <!-- the latest_posts template will be rendered here by calling show_latest_posts from core_tags module-->
-            {% show_latest_posts %}
+            {% show_latest_posts 4 %} 
+            <!-- limit the display posts passing 4 argument to show_latest_posts custom tag function -->
+            {% get_most_commented_posts as most_commented_posts %}
+            <h3>Most commented posts</h3>
+            <ul>
+                {% for post in most_commented_posts %}
+                <li>
+                    <a href="{{post.get_absolute_url}}">{{post.title}}</a>
+                </li>
+                {% endfor %}
+            </ul>
         </div>
         <div class="content">
             {% block content %}
