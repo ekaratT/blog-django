@@ -14,6 +14,9 @@
             <h2>Sidebar</h2>
             <h3>Here is my blog post</h3>
             <p>I've written {% total_posts %} posts so far.</p>
+            <p>
+                <a href="{% url 'post_feed' %}">Subscribe to my RSS feed</a>
+            </p>
             <!-- the latest_posts template will be rendered here by calling show_latest_posts from core_tags module-->
             {% show_latest_posts 4 %} 
             <!-- limit the display posts passing 4 argument to show_latest_posts custom tag function -->
