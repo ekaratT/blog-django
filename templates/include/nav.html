@@ -1,4 +1,7 @@
 <ul style="display: flex; text-align: center; justify-content: space-between; text-decoration: none; list-style: none;">
     <li><a href="{% url 'post_list' %}"><h2>HOME</h2></a></li>
+    {% if search_include %}
+        {% include 'include/search.html' %}
+    {% endif %}
     <li><p>Hell: admin</p></li>
 </ul>
