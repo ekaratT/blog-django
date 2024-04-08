@@ -9,7 +9,7 @@ from django.views.decorators.http import require_POST
 from django.conf import settings
 from taggit.models import Tag
 from django.db.models import Count
-from django.contrib.postgres.search import SearchVector
+from django.contrib.postgres.search import TrigramSimilarity
 
 
 # Create your views here.
@@ -18,7 +18,6 @@ def post_list(request, tag_slug=None):
     posts = Post.published.all()
     tag = None
     query = None
-    results = []
     # filter post if tag is clicked
     if tag_slug:
         tag = get_object_or_404(Tag, slug=tag_slug)
@@ -26,15 +25,14 @@ def post_list(request, tag_slug=None):
     # filter post if user use search form
     if request.GET.get('query'):
         query = request.GET.get('query')
-        posts = Post.objects.annotate(search=SearchVector(
-            'title', 'body', 'tag', 'author'
-        ),).filter(search=query)
+        posts = Post.published.annotate(
+            similarity=TrigramSimilarity('title', query),
+        ).filter(similarity__gte=0.1).order_by('-similarity')
     per_page = 3
     paginator = Paginator(posts, per_page=per_page)
     page_num = request.GET.get('page')
     page_obj = paginator.get_page(page_num)
-    print(tag)
-    context = {'page_obj': page_obj, 'tag': tag, 'search_include': True, 'query': query}
+    context = {'page_obj': page_obj, 'tag': tag, 'search_include': True, 'query': query, 'posts': posts}
     return render(request, 'core/post_list.html', context)
 
 

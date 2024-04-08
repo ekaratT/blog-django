@@ -2,6 +2,12 @@
 {% block title %}Post list{% endblock title %}
 
 {% block content %}
+{% if query %}
+    <h2>Posts contains {{query}}</h2>
+    {% with posts.count as total_posts %}
+        <h3>Found {{total_posts}} result{{total_posts|pluralize}}</h3>
+    {% endwith %}
+{% endif %}
 {% if tag %}
 <h2>Posts tagged with {{tag.name}}</h2>
 {% endif %}
